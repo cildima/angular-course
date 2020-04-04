@@ -16,6 +16,7 @@ import { DishService } from '../services/dish.service';
 export class DishdetailComponent implements OnInit {
   dish: Dish;
   dishIds: string[];
+  errMess: string;
   prev: string;
   next: string;
   commentForm: FormGroup;
@@ -52,10 +53,13 @@ export class DishdetailComponent implements OnInit {
     this.route.params
       .pipe(
         switchMap(params => this.dishService.getDish(params['id']))
-      ).subscribe(dish => {
-        this.dish = dish;
-        this.setPrevNext(dish.id)
-      });
+      )
+      .subscribe(dish => {
+          this.dish = dish;
+          this.setPrevNext(dish.id);
+        },
+      errmess => this.errMess = <any>errmess
+      );
   }
 
   createForm() {
