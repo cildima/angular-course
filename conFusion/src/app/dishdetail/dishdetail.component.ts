@@ -15,6 +15,7 @@ import { DishService } from '../services/dish.service';
 })
 export class DishdetailComponent implements OnInit {
   dish: Dish;
+  dishCopy: Dish;
   dishIds: string[];
   errMess: string;
   prev: string;
@@ -56,6 +57,7 @@ export class DishdetailComponent implements OnInit {
       )
       .subscribe(dish => {
           this.dish = dish;
+          this.dishCopy = dish;
           this.setPrevNext(dish.id);
         },
       errmess => this.errMess = <any>errmess
@@ -98,7 +100,19 @@ export class DishdetailComponent implements OnInit {
   onSubmit() {
     this.comment = this.commentForm.value;
     this.comment.date = new Date().toISOString();
-    this.dish.comments.push(this.comment);
+    this.dishCopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishCopy)
+      .subscribe(
+        dish => {
+          this.dish = dish;
+          this.dishCopy = dish;
+        },
+        errmess => {
+          this.dish = null;
+          this.dishCopy = null;
+          this.errMess = <any>errmess;
+        }
+      );
     this.commentForm.reset({
       rating: 5,
       comment: '',
