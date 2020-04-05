@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from "../animations/app.animations";
+import { flyInOut, expand } from '../animations/app.animations';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -13,15 +14,19 @@ import { flyInOut } from "../animations/app.animations";
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
   @ViewChild('fform') feedbackFormDirective;
 
   feedbackForm: FormGroup;
-  feedback: Feedback;
+  feedback: Feedback = null;
   contactType = ContactType;
+  errMess: string;
+  hideForm = false;
+  showLoader = false;
 
   formErrors = {
     'firstname': '',
@@ -52,7 +57,8 @@ export class ContactComponent implements OnInit {
   };
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private feedbackService: FeedbackService
   ) {
     this.createForm();
   }
@@ -98,17 +104,32 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
-    this.feedbackForm.reset({
-      firstname: '',
-      lastname: '',
-      telnum: '',
-      email: '',
-      agree: false,
-      contacttype: 'None',
-      message: ''
-    });
-    this.feedbackFormDirective.resetForm();
+    this.hideForm = true;
+    this.showLoader = true;
+    this.feedbackService.postFeedback(this.feedbackForm.value)
+      .subscribe(
+        feedback => {
+          this.showLoader = false;
+          this.feedback = feedback;
+          setTimeout(() => {
+            this.feedbackForm.reset({
+              firstname: '',
+              lastname: '',
+              telnum: '',
+              email: '',
+              agree: false,
+              contacttype: 'None',
+              message: ''
+            });
+            this.feedbackFormDirective.resetForm();
+            this.feedback = null;
+            this.hideForm = false;
+          }, 5000);
+        },
+        errmess => {
+          this.feedback = null;
+          this.errMess = <any>errmess;
+        }
+      );
   }
 }
