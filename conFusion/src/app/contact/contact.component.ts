@@ -106,7 +106,7 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.hideForm = true;
     this.showLoader = true;
-    this.feedbackService.postFeedback(this.feedbackForm.value)
+    this.feedbackService.submitFeedback(this.feedbackForm.value)
       .subscribe(
         feedback => {
           this.showLoader = false;
