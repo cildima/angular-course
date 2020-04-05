@@ -6,7 +6,12 @@
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
 
-  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+  <div
+    fxFlex="40"
+    *ngIf="dish"
+    [@visibility]="visibility"
+    [@expand]
+  >
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -38,6 +43,7 @@
     fxLayout="column"
     *ngIf="dish"
     [@visibility]="visibility"
+    [@expand]
   >
     <mat-list>
       <h3>Comments</h3>
