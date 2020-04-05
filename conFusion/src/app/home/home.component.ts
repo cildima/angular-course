@@ -6,7 +6,7 @@ import { Promotion } from '../shared/promotion';
 import { PromotionService } from '../services/promotion.service';
 import { Leader } from '../shared/leader';
 import { LeaderService } from '../services/leader.service';
-import { flyInOut, expand } from "../animations/app.animations";
+import { flyInOut, expand } from '../animations/app.animations';
 
 @Component({
   selector: 'app-home',

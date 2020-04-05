@@ -2,11 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { switchMap } from "rxjs/operators";
+import { switchMap } from 'rxjs/operators';
 
-import { flyInOut, visibility, expand } from "../animations/app.animations";
+import { flyInOut, visibility, expand } from '../animations/app.animations';
 import { Dish } from '../shared/dish';
-import { Comment } from "../shared/comment";
+import { Comment } from '../shared/comment';
 import { DishService } from '../services/dish.service';
 
 @Component({
